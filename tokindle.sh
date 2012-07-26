@@ -1,29 +1,51 @@
 #!/bin/sh
 # Script for sending documents to Kindle from shell
 
-SMTP_HOST='smtp.gmail.com:587'
-SMTP_USER='example@gmail.com'
-FROM='example@gmail.com'
-TO='example@kindle.com'
-SUBJECT=''
-CONVERT_SUBJECT='convert'
+# Configuration block
+# Change options in this block only!
 
-read -s -p "Enter SMTP password: " PASSWORD
+# SMTP host address
+SMTP_HOST='smtp.gmail.com:587'
+
+# SMTP user name
+SMTP_USER='example@gmail.com'
+
+# SMTP password. Warnning! If you don't fill
+# it you'll be asked for him.
+# Do not fill it if you not sure that file will be secured!
+PASSWORD=''
+
+# Value of "from" field
+FROM='example@gmail.com'
+
+# The recipment
+TO='example@kindle.com'
+
+# End of configuration block
+
+SUBJECT=''
+CONVERT_SUBJECT='Convert'
+
+if [ $PASSWORD = "" ]
+then
+    read -s -p "Enter SMTP password: " PASSWORD
+fi
 
 while [ $# -gt 0 ]
 do
     SUBJECT=''
 
-    if [ $1 = "-c" ]
+    if [ "$1" = "-c" ]
     then
         SUBJECT=$CONVERT_SUBJECT
         shift
     fi
     
-    echo "\nSending $1..."
+    echo "Sending $1..."
 
-    echo "" | \
-        mailx -s "$SUBJECT" -a "$1" \
+    echo "" | mailx \
+        -s "$SUBJECT" \
+        -a "$1" \
         -S smtp-use-starttls \
         -S ssl-verify=ignore \
         -S smtp-auth=login \
