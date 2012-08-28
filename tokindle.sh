@@ -26,7 +26,16 @@ TO='example@kindle.com'
 SUBJECT=''
 CONVERT_SUBJECT='Convert'
 
-if [ $PASSWORD = "" ]
+if [ "$1" = "-h" ]
+then
+    echo "Usage:"
+    echo "tokindle [-c] <filename> [[-c] <filename>].."
+    echo "Where:"
+    echo -e "  -c\t- convert file to mobi format"
+    exit 0
+fi
+
+if [ "$PASSWORD" = "" ]
 then
     read -s -p "Enter SMTP password: " PASSWORD
 fi
